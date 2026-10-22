@@ -1,0 +1,266 @@
+dda-----------------------
+import java.awt.*;
+import javax.swing.*;
+
+
+public class DDALineDrawing extends JPanel {  //this turns class to renderable drawing canvas
+
+		@Override
+		
+		public void paint(Graphics g)
+		{
+			//thing  g  like a digital paint brush
+			
+			super.paint(g);  //call the parent class
+			int x1=80;   int y1=200;
+			int x2=300; int y2=300;
+			
+			g.setColor(Color.BLUE);
+			drawDDA(g,x1,y1,x2,y2);
+		}
+		
+public void drawDDA(Graphics g,int x1,int y1,int x2,int y2)
+{
+	int dx=x2-x1;
+	int dy=y2-y1;
+	
+	int steps=Math.max(Math.abs(dx),Math.abs(dy));
+	
+	float x_inc=(float)dx/steps;
+	float y_inc=(float)dy/steps;
+	
+	float x=x1;
+	float y=y1;
+	
+	for(int i=0;i<=steps;i++)
+	{
+		g.fillRect(Math.round(x),Math.round(y),2, 2);
+		x+=x_inc;
+		y+=y_inc;
+	}
+	
+}
+
+
+public static void main(String[] args)
+{
+	JFrame frame=new JFrame("DDA Line Drawing Algorithm");
+	DDALineDrawing pannel = new DDALineDrawing();
+	
+	frame.add(pannel);
+	frame.setSize(400,400);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame.setVisible(true);
+	
+}
+
+}
+behansam l d-------------------------
+import javax.swing.*;
+import java.awt.*;
+
+public class BresenhamLineDrawing extends JPanel
+{
+
+    public void Bresenham(Graphics g, int x0, int y0, int x1, int y1) 
+    {
+        
+        int dx = Math.abs(x1 - x0);
+        int dy = Math.abs(y1 - y0);
+
+      
+        int x = x0;
+        int y = y0;
+
+      
+        if (dy < dx)
+        {
+            
+            int p = 2 * dy - dx; 
+
+            for (int i = 0; i <= dx; i++)
+            {
+                
+                g.fillRect(x, y, 1, 1); 
+
+                if (p < 0)
+                { 
+                    p = p + 2 * dy; 
+                    x = x + 1;      
+                   
+                } else
+                {
+                    p = p + 2 * dy - 2 * dx; 
+                    x = x + 1;               
+                    y = y + 1;              
+                }
+            }
+        } else 
+        	{
+        
+            int p = 2 * dx - dy; 
+
+            for (int i = 0; i <= dy; i++)
+            {
+               
+                g.fillRect(x, y, 1, 1); 
+
+                if (p < 0) 
+                { 
+                    p = p + 2 * dx; 
+                 
+                    y = y + 1;      
+                } else
+                {
+                    p = p + 2 * dx - 2 * dy; 
+                    x = x + 1;               
+                    y = y + 1;               
+                }
+            }
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+        super.paintComponent(g);
+        g.setColor(Color.BLACK);
+
+       
+        Bresenham(g, 50, 50, 300, 150);
+
+      
+        Bresenham(g, 50, 50, 150, 300);
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Bresenham Line Algorithm");
+        BresenhamLineDrawing panel = new BresenhamLineDrawing();
+
+        frame.add(panel);
+        frame.setSize(400, 400);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null); 
+        frame.setVisible(true);
+    }
+}
+
+midpoint-----------------------
+import java.awt.*;
+import javax.swing.*;
+
+public class MidpointCircle extends JPanel {
+
+    void plot8Points(Graphics g, int xc, int yc, int x, int y) {
+        g.fillRect(xc + x, yc + y, 1, 1);
+        g.fillRect(xc - x, yc + y, 1, 1);
+        g.fillRect(xc + x, yc - y, 1, 1);
+        g.fillRect(xc - x, yc - y, 1, 1);
+
+        g.fillRect(xc + y, yc + x, 1, 1);
+        g.fillRect(xc - y, yc + x, 1, 1);
+        g.fillRect(xc + y, yc - x, 1, 1);
+        g.fillRect(xc - y, yc - x, 1, 1);
+    }
+
+    void drawCircle(Graphics g, int xc, int yc, int r) {
+        int x = 0;
+        int y = r;
+        int p = 1 - r;
+
+        while (x <= y) {
+            plot8Points(g, xc, yc, x, y);
+
+            if (p < 0) {
+                p = p + 2 * x + 3;
+            } else {
+                p = p + 2 * (x - y) + 5;
+                y--;
+            }
+
+            x++;
+        }
+    }
+
+    @Override
+    protected void paintComponent(Graphics g) {
+        super.paintComponent(g);
+        g.setColor(Color.RED);
+        drawCircle(g, 500, 800, 300);
+    }
+
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Midpoint Circle Algorithm");
+        frame.add(new MidpointCircle());
+        frame.setSize(600, 600);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setVisible(true);
+    }
+}
+behansam circle-----------------------
+import java.awt.*;
+import javax.swing.*;
+
+public class BrasenhamCircle extends JPanel
+{
+	public void plot8Points(Graphics g,int xc,int yc,int x,int y)
+	{
+		g.fillRect(xc+x,yc+y,1,1);
+		g.fillRect(xc-x,yc+y,1,1);
+		g.fillRect(xc+x,yc-y,1,1);
+		g.fillRect(xc-x,yc-y,1,1);
+		g.fillRect(xc+y,yc+x,1,1);
+		g.fillRect(xc-y,yc+x,1,1);
+		g.fillRect(xc+y,yc-x,1,1);
+		g.fillRect(xc-y,yc-x,1,1);
+	}
+	
+	public void drawCircle(Graphics g,int xc,int yc,int r)
+	{
+		int x=0;
+		int y=r;
+		int d=3-2*r;
+		
+		while(x<=y)
+		{
+			plot8Points(g,xc,yc,x,y);
+			
+			if(d<0)
+			{
+				d+=4*x+6;
+			}
+			else
+			{	
+				d+=4*(x-y)+10;
+				y--;
+			}
+			
+			x++;
+		}
+		
+	}
+	
+	@Override
+	public void paintComponent(Graphics g)
+	{
+		super.paintComponent(g);
+		g.setColor(Color.RED);
+		drawCircle(g,400,500,200);
+	}
+	
+	
+	
+	
+	public static void main(String[] args)
+	{
+		BrasenhamCircle panel=new BrasenhamCircle();
+		JFrame frame=new JFrame("Bresenams circle drawing code ");
+		
+		frame.add(panel);
+		frame.setSize(1000,1000);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);
+		frame.setLocationRelativeTo(null);
+		
+	}
+}
